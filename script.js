@@ -415,10 +415,10 @@ const TRIVIA = [
         exp: '✅ El Aeropuerto Internacional El Edén es el único aeropuerto del Quindío.'
     },
     {
-        q: '¿En qué año fue declarado el Eje Cafetero Patrimonio de la Humanidad por la UNESCO?',
-        opts: ['2005', '2009', '2011', '2015'],
+        q: '¿Cuál es la relación de La Tebaida con el Paisaje Cultural Cafetero (PCC) de la UNESCO?',
+        opts: ['Está en la lista oficial', 'Es la capital del PCC', 'Está en su área de influencia', 'No tiene relación'],
         correct: 2,
-        exp: '✅ El Paisaje Cultural Cafetero, que incluye La Tebaida, fue declarado Patrimonio en 2011.'
+        exp: '✅ Aunque no está en la lista oficial de la UNESCO (2011), La Tebaida forma parte de su área de influencia y cultura viva.'
     },
 ];
 

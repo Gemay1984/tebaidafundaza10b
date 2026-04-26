@@ -81,7 +81,7 @@
         '1959': 'La construcción de las vías permitió conectar a La Tebaida con Armenia y el resto del Quindío, impulsando el comercio del café.',
         '1966': 'Con la fundación oficial del municipio se establecieron sus primeras instituciones públicas y se trazó el plan urbanístico del centro.',
         '1999': 'El terremoto del Quindío (25 enero) afectó severamente la región. La reconstrucción transformó la infraestructura urbana.',
-        '2011': 'La UNESCO reconoció el Paisaje Cultural Cafetero, del que La Tebaida hace parte, como Patrimonio Mundial de la Humanidad.',
+        '2011': 'La UNESCO declara al Eje Cafetero Patrimonio de la Humanidad. La Tebaida, aunque no está en la lista oficial, pertenece a su área de influencia.',
     };
 
     document.querySelectorAll('.tl-card').forEach(card => {
