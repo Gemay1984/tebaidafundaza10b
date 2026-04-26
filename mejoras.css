@@ -125,9 +125,13 @@
     box-shadow: 0 0 30px rgba(64,145,108,0.1), 0 10px 40px rgba(0,0,0,0.15) !important;
 }
 
-/* ── 10. MOBILE: hide back-top when music/tts overlap ── */
+/* ── 10. MOBILE SPECIFIC AJUSTES ── */
 @media (max-width: 600px) {
-    .back-top { right: 1rem; bottom: 5rem; }
+    .back-top { right: 1rem; bottom: 4.5rem; }
+    .music-control { bottom: 1rem; left: 1rem; gap: 0.3rem; }
+    .music-info { display: none !important; } /* Ocultar barra info de música en móvil */
+    .music-vol { display: none !important; } /* Ocultar slider volumen en móvil */
+    .video-wrapper { margin: 0 1rem; border-radius: 8px; }
 }
 
 /* ── 11. VIDEO PROMOCIONAL ── */
