@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mejoras.css">
     <link rel="stylesheet" href="interactivo.css">
+    <link rel="stylesheet" href="premium.css">
 </head>
 <body>
 
@@ -383,10 +384,14 @@
                         <p>Humedad tropical que nutre su biodiversidad única.</p>
                     </div>
 
-                    <!-- Mini forecast -->
-                    <div class="forecast-strip reveal">
-                        <div id="forecast-days" class="forecast-days">
-                            <!-- filled by JS -->
+                    <!-- Forecast Chart -->
+                    <div class="forecast-strip reveal" id="forecast-chart-container">
+                        <div class="forecast-title">Tendencia 5 Días</div>
+                        <div class="forecast-chart-wrapper">
+                            <svg id="forecast-svg" viewBox="0 0 400 120" preserveAspectRatio="none"></svg>
+                            <div id="forecast-days" class="forecast-days-chart">
+                                <!-- filled by JS -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -525,45 +530,27 @@
         </div>
     </section>
 
-    <!-- ============================================================ GALERÍA INTERACTIVA -->
-    <section id="galeria" class="section-galeria">
+    <!-- ============================================================ TURISMO Y CULTURA -->
+    <section id="turismo" class="section-turismo">
         <div class="container">
             <div class="section-header reveal">
-                <span class="section-tag">Imágenes</span>
-                <h2>Galería del Municipio</h2>
-                <p>Haz clic en cada imagen para explorarla en detalle.</p>
+                <span class="section-tag">Explorar</span>
+                <h2>Turismo y Cultura</h2>
+                <p>Descubre los encantos y lugares emblemáticos de nuestro municipio.</p>
             </div>
-            <div class="gallery-grid">
-                <div class="gallery-item reveal" onclick="openLightbox(0)">
-                    <img src="hero_new.jpg" alt="Vista de La Tebaida" loading="lazy">
-                    <div class="gallery-overlay"><span>📸</span><p>Panorámica Municipal</p></div>
+            
+            <div class="carousel-3d-wrap reveal">
+                <div class="carousel-3d" id="turismo-carousel">
+                    <!-- Cards injected via JS -->
                 </div>
-                <div class="gallery-item reveal" onclick="openLightbox(1)">
-                    <img src="main_photo.png" alt="Plaza principal" loading="lazy">
-                    <div class="gallery-overlay"><span>🏛️</span><p>Centro Histórico</p></div>
-                </div>
-                <div class="gallery-item reveal" onclick="openLightbox(2)">
-                    <img src="relief.png" alt="Valle de Maravelez" loading="lazy">
-                    <div class="gallery-overlay"><span>🌿</span><p>Valle de Maravelez</p></div>
-                </div>
-                <div class="gallery-item reveal" onclick="openLightbox(3)">
-                    <img src="escudo_oficial.png" alt="Escudo Oficial" loading="lazy">
-                    <div class="gallery-overlay"><span>🛡️</span><p>Escudo Oficial</p></div>
+                <div class="carousel-controls">
+                    <button id="car-prev" class="car-btn" aria-label="Anterior">&#8249;</button>
+                    <div class="carousel-indicators" id="car-indicators"></div>
+                    <button id="car-next" class="car-btn" aria-label="Siguiente">&#8250;</button>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- LIGHTBOX -->
-    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
-        <button class="lb-close" onclick="closeLightbox()">✕</button>
-        <button class="lb-prev" onclick="lbNav(-1,event)">&#8249;</button>
-        <button class="lb-next" onclick="lbNav(1,event)">&#8250;</button>
-        <div class="lb-inner">
-            <img id="lb-img" src="" alt="">
-            <p id="lb-caption"></p>
-        </div>
-    </div>
 
     <!-- ============================================================ TRIVIA MODAL -->
     <div id="trivia-overlay" class="trivia-overlay" style="display:none">
@@ -684,5 +671,6 @@
     <script src="script.js"></script>
     <script src="music.js"></script>
     <script src="interactivo.js"></script>
+    <script src="carousel.js"></script>
 </body>
 </html>

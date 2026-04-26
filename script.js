@@ -105,25 +105,67 @@ async function fetchWeather() {
             document.getElementById('weather-humidity').textContent = `${data.hourly.relativehumidity_2m[i]}%`;
         }
 
-        // Forecast strip
+        // Forecast Chart (SVG)
         if (data.daily) {
             const container = document.getElementById('forecast-days');
-            container.innerHTML = '';
-            for (let i = 0; i < 5; i++) {
-                const date = new Date(data.daily.time[i] + 'T12:00:00');
-                const dayName = DAY_NAMES[date.getDay()];
-                const { icon: fIcon } = getWMO(data.daily.weathercode[i]);
-                const maxT = Math.round(data.daily.temperature_2m_max[i]);
-                const minT = Math.round(data.daily.temperature_2m_min[i]);
-                container.innerHTML += `
-                    <div class="forecast-day">
-                        <span class="fday-name">${dayName}</span>
-                        <span class="fday-icon">${fIcon}</span>
-                        <span class="fday-temp">${maxT}°</span>
-                        <span style="font-size:0.75rem;opacity:0.6">${minT}°</span>
-                    </div>`;
+            const svg = document.getElementById('forecast-svg');
+            if (container && svg) {
+                container.innerHTML = '';
+                const maxTemps = data.daily.temperature_2m_max;
+                const minTemps = data.daily.temperature_2m_min;
+                
+                // SVG Chart Drawing
+                const maxT = Math.max(...maxTemps) + 2;
+                const minT = Math.min(...minTemps) - 2;
+                const range = maxT - minT;
+                const w = 400; const h = 100;
+                const dx = w / 4;
+                
+                let pointsStr = '';
+                for (let i = 0; i < 5; i++) {
+                    const x = i * dx;
+                    const y = h - ((maxTemps[i] - minT) / range) * h + 10;
+                    pointsStr += `${x},${y} `;
+                }
+                
+                svg.innerHTML = `
+                    <defs>
+                        <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                            <stop offset="0%" stop-color="#40916c"/>
+                            <stop offset="100%" stop-color="#f9c74f"/>
+                        </linearGradient>
+                    </defs>
+                    <polyline fill="none" stroke="url(#lineGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" points="${pointsStr.trim()}"/>
+                `;
+
+                for (let i = 0; i < 5; i++) {
+                    const x = i * dx;
+                    const y = h - ((maxTemps[i] - minT) / range) * h + 10;
+                    svg.innerHTML += `<circle cx="${x}" cy="${y}" r="5" fill="#fff" stroke="#f9c74f" stroke-width="2"/>`;
+                    svg.innerHTML += `<text x="${x}" y="${y - 12}" fill="rgba(255,255,255,0.9)" font-size="14" font-family="Outfit" font-weight="700" text-anchor="middle">${Math.round(maxTemps[i])}°</text>`;
+
+                    const date = new Date(data.daily.time[i] + 'T12:00:00');
+                    const dayName = DAY_NAMES[date.getDay()];
+                    const { icon: fIcon } = getWMO(data.daily.weathercode[i]);
+                    container.innerHTML += `
+                        <div class="fday-chart-item" style="width: ${100/5}%">
+                            <span>${dayName}</span>
+                            <span class="fday-chart-icon">${fIcon}</span>
+                            <span style="opacity:0.6;font-size:0.7rem;margin-top:4px;">${Math.round(minTemps[i])}°</span>
+                        </div>`;
+                }
             }
         }
+        
+        // Day/Night Cycle based on real hour in Colombia
+        const hour = new Date().toLocaleString("en-US", {timeZone: "America/Bogota", hour: 'numeric', hour12: false});
+        const isNight = hour >= 18 || hour < 6;
+        if (isNight) {
+            document.body.classList.add('night-mode');
+        } else {
+            document.body.classList.remove('night-mode');
+        }
+        document.querySelector('.weather-main').classList.add('premium');
     } catch (err) {
         document.getElementById('weather-desc-display').textContent = 'No disponible';
         console.warn('Weather error:', err);
@@ -535,3 +577,5 @@ function launchConfetti() {
     }
     draw();
 }
+   
+ 
