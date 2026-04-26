@@ -39,11 +39,11 @@ const icons = {
 };
 
 const poi = [
-    { coords:[4.4528,-75.7876], name:"Parque de Bolívar", desc:"Corazón social y cultural del municipio.", icon:icons.default },
+    { coords:[4.4528,-75.7876], name:"Centro Histórico (Parque de Bolívar)", desc:"Corazón social y cultural del municipio.", icon:icons.default },
     { coords:[4.4531,-75.7885], name:"Parroquia Ntra. Sra. del Carmen", desc:"Arquitectura moderna y emblema espiritual.", icon:icons.default },
     { coords:[4.4447,-75.7728], name:"✈️ Aeropuerto El Edén", desc:"Principal acceso aéreo internacional al Quindío.", icon:icons.airport },
     { coords:[4.4600,-75.8000], name:"Valle de Maravelez", desc:"Confluencia de Ríos Quindío y Barragán → Río La Vieja.", icon:icons.default },
-    { coords:[4.4560,-75.7850], name:"Corredor Gastronómico", desc:"Los mejores sabores del Quindío en un solo lugar.", icon:icons.default },
+    { coords:[4.4560,-75.7850], name:"El Paseo (Corredor Gastronómico)", desc:"Los mejores sabores del Quindío en un solo lugar.", icon:icons.default },
     { coords:[4.4490,-75.7750], name:"Zona Franca del Quindío", desc:"Motor de desarrollo económico e industrial.", icon:icons.default },
 ];
 poi.forEach(p => {

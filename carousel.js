@@ -1,8 +1,6 @@
 /* ─── 3D TOURISM CAROUSEL ─── */
 const tourismData = [
     { src: 'hero_new.jpg', title: 'Panorámica Municipal', desc: 'El Edén Tropical del Quindío visto desde lo alto, mostrando sus tierras fértiles.' },
-    { src: 'main_photo.png', title: 'Centro Histórico', desc: 'La plaza principal y la arquitectura que refleja la resiliencia de su gente.' },
-    { src: 'relief.png', title: 'Valle de Maravelez', desc: 'Donde confluyen los ríos Quindío y Barragán, un paraíso natural incomparable.' },
     { src: 'escudo_oficial.png', title: 'Símbolos Patrios', desc: 'El escudo oficial representa el lema: Trabajo, Divisas y Riqueza.' }
 ];
 
