@@ -1,0 +1,131 @@
+/* ════════════════════════════════════════════
+   MEJORAS PREMIUM — La Tebaida
+   ════════════════════════════════════════════ */
+
+/* ── 1. SCROLL PROGRESS BAR ── */
+.scroll-progress {
+    position: fixed; top: 0; left: 0;
+    height: 3px; width: 0%;
+    background: linear-gradient(90deg, #40916c, #f9c74f, #ff4d6d);
+    z-index: 99998;
+    border-radius: 0 3px 3px 0;
+    box-shadow: 0 0 10px rgba(249,199,79,0.7);
+    pointer-events: none;
+}
+
+/* ── 2. BACK TO TOP ── */
+.back-top {
+    position: fixed; bottom: 2rem; right: 8rem;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(27,67,50,0.92);
+    border: 2px solid rgba(255,255,255,0.2);
+    color: white; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    backdrop-filter: blur(12px); z-index: 1000;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.4s, transform 0.4s, background 0.2s;
+    pointer-events: none;
+}
+.back-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.back-top:hover { background: #40916c; transform: translateY(-4px); }
+
+/* ── 3. CUSTOM CURSOR (desktop only) ── */
+@media (pointer: fine) {
+    body { cursor: none; }
+    a, button, [onclick], input, label, select { cursor: none; }
+}
+.custom-cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: #d4a373; border-radius: 50%;
+    pointer-events: none; z-index: 999999;
+    transform: translate(-50%,-50%);
+    transition: width .2s, height .2s, background .2s;
+    mix-blend-mode: difference;
+}
+.custom-cursor-ring {
+    position: fixed; width: 34px; height: 34px;
+    border: 2px solid rgba(212,163,115,0.55);
+    border-radius: 50%; pointer-events: none; z-index: 999998;
+    transform: translate(-50%,-50%);
+    transition: width .25s ease, height .25s ease, border-color .25s;
+}
+.custom-cursor.hover { width: 18px; height: 18px; background: #ff4d6d; }
+.custom-cursor-ring.hover { width: 50px; height: 50px; border-color: rgba(255,77,109,0.45); }
+@media (pointer: coarse) { .custom-cursor, .custom-cursor-ring { display: none; } }
+
+/* ── 4. REVEAL STAGGER ANIMATIONS ── */
+.curiosidades-grid .curio-card:nth-child(1) { transition-delay: 0.00s; }
+.curiosidades-grid .curio-card:nth-child(2) { transition-delay: 0.07s; }
+.curiosidades-grid .curio-card:nth-child(3) { transition-delay: 0.14s; }
+.curiosidades-grid .curio-card:nth-child(4) { transition-delay: 0.21s; }
+.curiosidades-grid .curio-card:nth-child(5) { transition-delay: 0.28s; }
+.curiosidades-grid .curio-card:nth-child(6) { transition-delay: 0.35s; }
+
+.gallery-item:nth-child(1) { transition-delay: 0.00s; }
+.gallery-item:nth-child(2) { transition-delay: 0.08s; }
+.gallery-item:nth-child(3) { transition-delay: 0.16s; }
+.gallery-item:nth-child(4) { transition-delay: 0.24s; }
+
+.tl-item:nth-child(1) { transition-delay: 0.00s; }
+.tl-item:nth-child(2) { transition-delay: 0.10s; }
+.tl-item:nth-child(3) { transition-delay: 0.18s; }
+.tl-item:nth-child(4) { transition-delay: 0.26s; }
+.tl-item:nth-child(5) { transition-delay: 0.34s; }
+
+/* ── 5. ENHANCED CURIO CARD HOVER ── */
+.curio-card {
+    transition: transform 0.35s cubic-bezier(0.165,0.84,0.44,1),
+                box-shadow 0.35s ease,
+                background 0.3s !important;
+}
+.curio-card:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+    box-shadow: 0 24px 60px rgba(27,67,50,0.15) !important;
+}
+.curio-card:hover .curio-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+.curio-icon {
+    transition: transform 0.35s cubic-bezier(0.165,0.84,0.44,1);
+}
+
+/* ── 6. NAV LINK ACTIVE HIGHLIGHT ── */
+.nav-links a.active {
+    color: white;
+    background: rgba(255,255,255,0.12);
+    border-radius: 8px;
+    padding: 0.3rem 0.7rem;
+}
+
+/* ── 7. HERO STATS ANIMATED UNDERLINE ── */
+.stat-item {
+    position: relative;
+    cursor: default;
+}
+.stat-num {
+    display: inline-block;
+    transition: transform 0.3s;
+}
+.stat-item:hover .stat-num { transform: scale(1.08); }
+
+/* ── 8. SECTION HEADER DECORATIVE LINE ── */
+.section-header::after {
+    content: '';
+    display: block;
+    width: 60px; height: 3px;
+    background: linear-gradient(90deg, #40916c, #f9c74f);
+    border-radius: 2px;
+    margin: 1.2rem auto 0;
+}
+
+/* ── 9. GEO CARD GLOW ── */
+.geo-stat-card:hover {
+    border-color: rgba(64,145,108,0.4) !important;
+    box-shadow: 0 0 30px rgba(64,145,108,0.1), 0 10px 40px rgba(0,0,0,0.15) !important;
+}
+
+/* ── 10. MOBILE: hide back-top when music/tts overlap ── */
+@media (max-width: 600px) {
+    .back-top { right: 1rem; bottom: 5rem; }
+}

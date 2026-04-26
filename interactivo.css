@@ -1,0 +1,151 @@
+/* ═══════════════════════════════════════════════════════════
+   INTERACTIVIDAD AVANZADA — Gráficas, Timeline, Topo
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── TOPO HINT ── */
+.topo-hint {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+/* ── TOPO SVG CONTAINER ── */
+.profile-container { position: relative; }
+.topo-svg { cursor: crosshair; border-radius: 12px; overflow: hidden; }
+.topo-zone { cursor: crosshair; }
+
+/* Tooltip for topo profile */
+.topo-tooltip {
+    position: absolute;
+    top: 0.5rem; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(13,34,24,0.93);
+    border: 1px solid rgba(249,199,79,0.4);
+    border-radius: 14px;
+    padding: 0.7rem 1.2rem;
+    text-align: center;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    min-width: 200px;
+    animation: fadeInDown 0.2s ease;
+    z-index: 10;
+}
+@keyframes fadeInDown { from{opacity:0;transform:translateX(-50%) translateY(-6px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+.topo-tt-label { display: block; color: #f9c74f; font-weight: 700; font-family: 'Outfit', sans-serif; font-size: 0.95rem; }
+.topo-tt-alt   { display: block; color: #52b788; font-size: 1.2rem; font-weight: 800; margin: 0.15rem 0; }
+.topo-tt-desc  { display: block; color: rgba(255,255,255,0.6); font-size: 0.75rem; }
+
+/* ── TIMELINE ENHANCED ── */
+.tl-card {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.165,0.84,0.44,1) !important;
+}
+.tl-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 20px 50px rgba(27,67,50,0.2) !important;
+}
+
+/* Expand indicator */
+.tl-expand-icon {
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: rgba(64,145,108,0.15);
+    border: 1px solid rgba(64,145,108,0.3);
+    border-radius: 50%;
+    line-height: 22px;
+    text-align: center;
+    font-size: 0.7rem;
+    margin-left: 0.5rem;
+    transition: transform 0.3s, background 0.3s;
+    vertical-align: middle;
+    color: #40916c;
+}
+.tl-card.expanded .tl-expand-icon {
+    transform: rotate(180deg);
+    background: rgba(64,145,108,0.25);
+}
+
+/* Hidden extra content */
+.tl-card-extra {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.165,0.84,0.44,1), opacity 0.4s;
+    opacity: 0;
+    font-size: 0.85rem;
+    color: #555;
+    border-top: 0px solid transparent;
+}
+.tl-card.expanded .tl-card-extra {
+    max-height: 200px;
+    opacity: 1;
+    border-top: 1px solid rgba(27,67,50,0.1);
+    padding-top: 0.8rem;
+    margin-top: 0.8rem;
+}
+
+/* Animated timeline progress line */
+.timeline-progress-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 3px;
+    height: 0%;
+    background: linear-gradient(to bottom, #40916c, #f9c74f);
+    border-radius: 2px;
+    z-index: 2;
+    transition: height 0.8s ease;
+    pointer-events: none;
+}
+@media (max-width: 900px) {
+    .timeline-progress-line { left: 20px; }
+}
+
+/* Year bubble pulse on hover */
+.tl-year-bubble { transition: transform 0.3s, box-shadow 0.3s; cursor: default; }
+.tl-year-bubble:hover { transform: translateX(-50%) scale(1.1); box-shadow: 0 0 0 8px rgba(64,145,108,0.12); }
+
+/* ── CLIMATE BARS ENHANCED ── */
+.temp-bar-wrap { position: relative; overflow: hidden; }
+.temp-bar-fill {
+    position: relative;
+    transition: width 1s cubic-bezier(0.165,0.84,0.44,1);
+}
+.temp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 30px; height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255,255,255,0.3));
+    animation: shimmer 2s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100%{opacity:0} 50%{opacity:1} }
+
+/* Geo stat cards enhanced */
+.geo-stat-card {
+    cursor: default;
+    transition: all 0.3s !important;
+}
+.geo-stat-card:hover {
+    border-color: rgba(64,145,108,0.5) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(27,67,50,0.15) !important;
+}
+
+/* ── SVG MAP ENHANCED ── */
+.svg-pin {
+    transition: opacity 0.2s;
+}
+.svg-pin:hover { opacity: 0.85; }
+.svg-pin rect, .svg-pin circle {
+    transition: all 0.2s;
+}
+.svg-pin:hover rect { filter: brightness(1.2); }
+
+/* River labels pulse */
+#rio-quindio, #rio-barragan, #rio-la-vieja {
+    transition: stroke-width 0.3s;
+}

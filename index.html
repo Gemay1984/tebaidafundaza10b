@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Tebaida | Edén Tropical del Quindío</title>
+    <meta name="description" content="Descubre La Tebaida, Quindío. Historia, geografía, clima en tiempo real y mapa interactivo del municipio más cálido del Eje Cafetero.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mejoras.css">
+    <link rel="stylesheet" href="interactivo.css">
+</head>
+<body>
+
+    <!-- CUSTOM CURSOR -->
+    <div class="custom-cursor" id="cursor"></div>
+    <div class="custom-cursor-ring" id="cursor-ring"></div>
+
+    <!-- SCROLL PROGRESS BAR -->
+    <div id="scroll-progress" class="scroll-progress"></div>
+
+    <!-- ============================================================ NAV -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <div class="nav-logo">
+                <img src="escudo_oficial.png" alt="Escudo La Tebaida">
+                <span>La Tebaida</span>
+            </div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#geografia" onclick="closeMenu()">Geografía</a></li>
+                <li><a href="#clima" onclick="closeMenu()">Clima</a></li>
+                <li><a href="#historia" onclick="closeMenu()">Historia</a></li>
+                <li><a href="#curiosidades" onclick="closeMenu()">Curiosidades</a></li>
+                <li><a href="#mapa" onclick="closeMenu()">Mapa</a></li>
+            </ul>
+            <div class="nav-fundanza">
+                <img src="logo_colegio.jpg" alt="Fundanza">
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============================================================ SPLASH SCREEN -->
+    <div id="splash" class="splash-overlay">
+        <div class="splash-bg"></div>
+        <div class="splash-content">
+            <img src="escudo_oficial.png" alt="Escudo" class="splash-escudo">
+            <p class="splash-pre">Municipio de Quindío · Colombia</p>
+            <h1 class="splash-title">La Tebaida</h1>
+            <p class="splash-sub">Edén Tropical del Eje Cafetero</p>
+            <div class="splash-note">🎵 Con música ambiental</div>
+            <button class="splash-btn" id="splash-enter" onclick="enterSite()">
+                <span>Entrar</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+        <div class="splash-leaves">
+            <span>🌿</span><span>🌺</span><span>☕</span><span>🍃</span><span>🌸</span>
+        </div>
+    </div>
+
+    <!-- ============================================================ HERO -->
+    <section class="hero" id="inicio">
+        <div class="hero-overlay"></div>
+        <img class="hero-bg parallax-img" src="hero_cafetero.jpg" alt="Paisaje Cafetero de La Tebaida">
+        <div class="hero-content reveal">
+            <p class="hero-pre">☕ Municipio de Quindío · Colombia · Patrimonio Cafetero</p>
+            <h1>La Tebaida</h1>
+            <p class="hero-subtitle">Edén Tropical del Quindío</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-num" data-count="1200" data-suffix="">1.200</span>
+                    <span class="stat-label">msnm</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" data-count="23" data-suffix="°C">23°C</span>
+                    <span class="stat-label">Temp. media</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-num" data-count="89" data-suffix="">89</span>
+                    <span class="stat-label">km²</span>
+                </div>
+            </div>
+            <a href="#geografia" class="hero-btn">Explorar →</a>
+        </div>
+        <div class="hero-scroll-hint">
+            <div class="scroll-wheel"></div>
+        </div>
+    </section>
+
+    <!-- ============================================================ GEOGRAFÍA & RELIEVE -->
+    <section id="geografia" class="section-geo">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Territorio</span>
+                <h2>Geografía y Relieve</h2>
+                <p>Una tierra donde el valle abraza a los ríos y los ríos abrazan al mar.</p>
+            </div>
+
+            <div class="geo-layout">
+                <!-- Mapa topográfico visual -->
+                <div class="geo-map-card reveal" id="geo-svg-wrap">
+                    <div class="geo-svg-title">Hidrografía e Infraestructura</div>
+                    <svg id="geo-svg" viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Background terrain -->
+                        <defs>
+                            <radialGradient id="bgGrad" cx="50%" cy="50%" r="70%">
+                                <stop offset="0%" stop-color="#2d6a4f" stop-opacity="1"/>
+                                <stop offset="100%" stop-color="#1b4332" stop-opacity="1"/>
+                            </radialGradient>
+                            <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                                <path d="M0,0 L0,6 L8,3 z" fill="#74c0fc"/>
+                            </marker>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                            </filter>
+                        </defs>
+                        <rect width="420" height="380" fill="url(#bgGrad)" rx="0"/>
+                        <!-- Terrain contour lines -->
+                        <ellipse cx="210" cy="190" rx="190" ry="160" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                        <ellipse cx="210" cy="190" rx="150" ry="120" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                        <ellipse cx="210" cy="190" rx="110" ry="85" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                        <!-- Highland coloring -->
+                        <path d="M0,0 Q100,60 200,40 Q300,20 420,70 L420,0 Z" fill="rgba(255,255,255,0.04)"/>
+                        <!-- ═══ RÍO QUINDÍO (comes from NE, top-right) -->
+                        <path id="rio-quindio" d="M380,20 Q340,60 300,100 Q270,130 240,160 Q225,175 215,188" fill="none" stroke="#74c0fc" stroke-width="5" stroke-linecap="round" filter="url(#glow)">
+                            <animate attributeName="stroke-dashoffset" from="500" to="0" dur="2.5s" begin="0.5s" fill="freeze"/>
+                        </path>
+                        <path id="rio-quindio-bg" d="M380,20 Q340,60 300,100 Q270,130 240,160 Q225,175 215,188" fill="none" stroke="rgba(116,192,252,0.2)" stroke-width="9" stroke-linecap="round"/>
+                        <!-- ═══ RÍO BARRAGÁN (comes from S, bottom) -->
+                        <path id="rio-barragan" d="M320,380 Q290,330 260,285 Q245,255 230,225 Q222,207 216,192" fill="none" stroke="#a9d6e5" stroke-width="5" stroke-linecap="round" filter="url(#glow)">
+                            <animate attributeName="stroke-dashoffset" from="500" to="0" dur="2.5s" begin="1s" fill="freeze"/>
+                        </path>
+                        <path d="M320,380 Q290,330 260,285 Q245,255 230,225 Q222,207 216,192" fill="none" stroke="rgba(169,214,229,0.2)" stroke-width="9" stroke-linecap="round"/>
+                        <!-- ═══ RÍO LA VIEJA (exits W, left) -->
+                        <path id="rio-la-vieja" d="M214,190 Q190,195 160,198 Q120,202 80,210 Q40,218 0,225" fill="none" stroke="#4dabf7" stroke-width="7" stroke-linecap="round" filter="url(#glow)">
+                            <animate attributeName="stroke-dashoffset" from="400" to="0" dur="2s" begin="2s" fill="freeze"/>
+                        </path>
+                        <path d="M214,190 Q190,195 160,198 Q120,202 80,210 Q40,218 0,225" fill="none" stroke="rgba(77,171,247,0.25)" stroke-width="12" stroke-linecap="round"/>
+                        <!-- Confluence glow point -->
+                        <circle cx="215" cy="190" r="14" fill="rgba(77,171,247,0.15)" filter="url(#glow)">
+                            <animate attributeName="r" values="10;18;10" dur="2.5s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0.3;0.8;0.3" dur="2.5s" repeatCount="indefinite"/>
+                        </circle>
+                        <circle cx="215" cy="190" r="6" fill="#4dabf7"/>
+                        <!-- ══ PINS ══ -->
+                        <!-- Valle de Maravelez - confluence label -->
+                        <g class="svg-pin" data-info="Aquí confluyen el Río Quindío y el Río Barragán, formando el Río La Vieja. Hito hidrográfico del Quindío." style="cursor:pointer">
+                            <rect x="115" y="156" width="80" height="26" rx="13" fill="rgba(77,171,247,0.85)"/>
+                            <text x="155" y="173" text-anchor="middle" font-size="9" font-weight="bold" fill="white">Valle de Maravelez</text>
+                            <line x1="195" y1="169" x2="213" y2="183" stroke="#4dabf7" stroke-width="1.5"/>
+                        </g>
+                        <!-- Urban area of La Tebaida -->
+                        <ellipse cx="168" cy="230" rx="22" ry="15" fill="rgba(64,145,108,0.55)" stroke="#74b894" stroke-width="1.5"/>
+                        <g class="svg-pin" data-info="Cabecera municipal de La Tebaida. Altitud: 1.200 msnm. Municipio más cálido del Quindío." style="cursor:pointer">
+                            <circle cx="168" cy="230" r="5" fill="#d8f3dc"/>
+                            <rect x="110" y="248" width="60" height="20" rx="10" fill="rgba(27,67,50,0.85)"/>
+                            <text x="140" y="261" text-anchor="middle" font-size="8" font-weight="bold" fill="white">La Tebaida</text>
+                        </g>
+                        <!-- Airport -->
+                        <g class="svg-pin" data-info="Aeropuerto Internacional El Edén. Único aeropuerto int'l del Quindío. Puerta de entrada al Eje Cafetero." style="cursor:pointer">
+                            <circle cx="245" cy="270" r="8" fill="#f9c74f"/>
+                            <text x="245" y="274" text-anchor="middle" font-size="9" fill="#1b4332">✈</text>
+                            <rect x="255" y="262" width="80" height="20" rx="10" fill="rgba(249,199,79,0.9)"/>
+                            <text x="295" y="275" text-anchor="middle" font-size="8" font-weight="bold" fill="#1b4332">El Edén</text>
+                        </g>
+                        <!-- River labels -->
+                        <text transform="rotate(-35, 310, 80)" x="310" y="80" font-size="9" fill="rgba(116,192,252,0.9)" font-style="italic">Río Quindío</text>
+                        <text transform="rotate(35, 270, 320)" x="270" y="320" font-size="9" fill="rgba(169,214,229,0.9)" font-style="italic">Río Barragán</text>
+                        <text x="30" y="205" font-size="9" fill="rgba(77,171,247,0.9)" font-style="italic">Río La Vieja →</text>
+                        <!-- Compass -->
+                        <g transform="translate(370,330)">
+                            <circle r="20" fill="rgba(0,0,0,0.3)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                            <text y="-8" text-anchor="middle" font-size="9" fill="white" font-weight="bold">N</text>
+                            <line x1="0" y1="-14" x2="0" y2="14" stroke="white" stroke-width="1.5"/>
+                            <line x1="-14" y1="0" x2="14" y2="0" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+                        </g>
+                    </svg>
+                    <!-- Tooltip -->
+                    <div id="geo-tooltip" class="geo-tooltip">Haz clic en un punto para más info</div>
+                    <div class="geo-legend-row">
+                        <span><span class="gl-dot" style="background:#74c0fc"></span>Río Quindío</span>
+                        <span><span class="gl-dot" style="background:#a9d6e5"></span>Río Barragán</span>
+                        <span><span class="gl-dot" style="background:#4dabf7;width:14px"></span>Río La Vieja</span>
+                        <span><span class="gl-dot" style="background:#f9c74f"></span>Aeropuerto</span>
+                        <span><span class="gl-dot" style="background:#d8f3dc"></span>Zona Urbana</span>
+                    </div>
+                </div>
+
+                <!-- Data cards -->
+                <div class="geo-cards">
+                    <div class="geo-card reveal">
+                        <div class="geo-icon">🏔️</div>
+                        <h3>Altitud</h3>
+                        <p class="geo-value">1.200 msnm</p>
+                        <p>La menor altitud del Quindío, lo que define su clima cálido y exuberante vegetación tropical.</p>
+                    </div>
+                    <div class="geo-card reveal">
+                        <div class="geo-icon">🌊</div>
+                        <h3>Valle de Maravelez</h3>
+                        <p class="geo-value">Confluencia Hídrica</p>
+                        <p>Punto donde el <strong>Río Quindío</strong> y el <strong>Río Barragán</strong> se unen para formar el majestuoso <strong>Río La Vieja</strong>.</p>
+                    </div>
+                    <div class="geo-card reveal">
+                        <div class="geo-icon">🗺️</div>
+                        <h3>Extensión</h3>
+                        <p class="geo-value">89 km²</p>
+                        <p>Limita con Armenia, Montenegro, Calarcá y el departamento del Valle del Cauca. Posición estratégica en el occidente del Quindío.</p>
+                    </div>
+                    <div class="geo-card reveal">
+                        <div class="geo-icon">🌿</div>
+                        <h3>Zona de Vida</h3>
+                        <p class="geo-value">Bosque Húmedo Tropical</p>
+                        <p>Vegetación exuberante propicia para cultivos de cítricos, plátano, caña panelera y café.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Perfil topográfico interactivo -->
+            <div class="topo-profile reveal">
+                <h3>Perfil Topográfico — Corte Este → Oeste</h3>
+                <p class="topo-hint">🖱️ Mueve el cursor sobre el perfil para explorar la altitud</p>
+                <div class="profile-container" id="topo-wrap">
+                    <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" class="topo-svg" id="topo-svg">
+                        <defs>
+                            <linearGradient id="topoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#2d6a4f;stop-opacity:0.8"/>
+                                <stop offset="100%" style="stop-color:#1b4332;stop-opacity:0.3"/>
+                            </linearGradient>
+                            <linearGradient id="topoGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:#40916c;stop-opacity:0.4"/>
+                                <stop offset="100%" style="stop-color:#1b4332;stop-opacity:0"/>
+                            </linearGradient>
+                        </defs>
+                        <!-- Terrain fill -->
+                        <path class="topo-path" d="M0,200 L0,130 Q50,100 100,120 Q150,80 200,50 Q250,30 300,60 Q350,80 400,100 Q450,90 500,95 Q600,100 700,105 Q800,108 900,110 L900,200 Z" fill="url(#topoGrad)"/>
+                        <!-- Glowing highlight -->
+                        <path d="M0,130 Q50,100 100,120 Q150,80 200,50 Q250,30 300,60 Q350,80 400,100 Q450,90 500,95 Q600,100 700,105 Q800,108 900,110" fill="none" stroke="rgba(64,145,108,0.3)" stroke-width="8"/>
+                        <!-- Profile line -->
+                        <path class="topo-line" id="topo-line" d="M0,130 Q50,100 100,120 Q150,80 200,50 Q250,30 300,60 Q350,80 400,100 Q450,90 500,95 Q600,100 700,105 Q800,108 900,110" fill="none" stroke="#52b788" stroke-width="3"/>
+                        <!-- Interactive hover areas with data -->
+                        <rect class="topo-zone" data-label="Calarcá / Armenia" data-alt="1.550 msnm" data-desc="Zona montañosa de transición" x="0" y="0" width="180" height="200" fill="transparent"/>
+                        <rect class="topo-zone" data-label="Serranías del Quindío" data-alt="1.900 msnm" data-desc="Punto más elevado del perfil — bosque andino" x="180" y="0" width="150" height="200" fill="transparent"/>
+                        <rect class="topo-zone" data-label="La Tebaida" data-alt="1.200 msnm" data-desc="Centro urbano — planicie cafetera" x="380" y="0" width="200" height="200" fill="transparent"/>
+                        <rect class="topo-zone" data-label="Valle del Cauca" data-alt="950 msnm" data-desc="Planicie del río — tierras bajas" x="650" y="0" width="250" height="200" fill="transparent"/>
+                        <!-- Zone highlight (updated by JS) -->
+                        <rect id="topo-zone-hl" x="0" y="0" width="0" height="200" fill="rgba(249,199,79,0.06)" pointer-events="none"/>
+                        <!-- Cursor vertical line -->
+                        <line id="topo-cursor" x1="-1" y1="0" x2="-1" y2="200" stroke="rgba(249,199,79,0.7)" stroke-width="1.5" stroke-dasharray="4 3" pointer-events="none"/>
+                        <!-- Cursor dot -->
+                        <circle id="topo-dot" cx="-10" cy="-10" r="5" fill="#f9c74f" pointer-events="none"/>
+                        <!-- Labels -->
+                        <text x="250" y="45" class="topo-label" fill="white" opacity="0.9">Serranías</text>
+                        <text x="480" y="88" class="topo-label" fill="white" opacity="0.9">La Tebaida</text>
+                        <text x="730" y="98" class="topo-label" fill="white" opacity="0.9">Valle</text>
+                        <!-- Grid lines -->
+                        <line x1="0" y1="80" x2="900" y2="80" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4"/>
+                        <line x1="0" y1="120" x2="900" y2="120" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4"/>
+                        <line x1="0" y1="150" x2="900" y2="150" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4"/>
+                        <text x="8" y="78" class="topo-label-sm" fill="rgba(255,255,255,0.4)">1.900m</text>
+                        <text x="8" y="118" class="topo-label-sm" fill="rgba(255,255,255,0.4)">1.400m</text>
+                        <text x="8" y="148" class="topo-label-sm" fill="rgba(255,255,255,0.4)">1.200m</text>
+                    </svg>
+                    <!-- Floating tooltip -->
+                    <div id="topo-tooltip" class="topo-tooltip" style="display:none">
+                        <span id="topo-tt-label" class="topo-tt-label"></span>
+                        <span id="topo-tt-alt" class="topo-tt-alt"></span>
+                        <span id="topo-tt-desc" class="topo-tt-desc"></span>
+                    </div>
+                    <div class="profile-labels">
+                        <span>Calarcá / Armenia</span>
+                        <span>← La Tebaida →</span>
+                        <span>Valle del Cauca</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ CLIMA -->
+    <section id="clima" class="section-clima">
+        <div class="container">
+            <div class="section-header reveal" style="color:white;">
+                <span class="section-tag tag-white">Meteorología</span>
+                <h2 style="color:white;">Clima de La Tebaida</h2>
+                <p style="color:rgba(255,255,255,0.8);">El municipio más cálido del departamento del Quindío, donde el sol brilla con fuerza tropical.</p>
+            </div>
+
+            <div class="clima-layout">
+                <!-- Live Weather -->
+                <div class="weather-main reveal">
+                    <div class="weather-live-badge">🔴 EN VIVO</div>
+                    <div id="weather-icon" class="weather-big-icon">⛅</div>
+                    <div id="weather-temp-display" class="weather-temp-hero">--°C</div>
+                    <div id="weather-desc-display" class="weather-desc-hero">Cargando...</div>
+                    <div class="weather-meta">
+                        <div class="wmeta-item">
+                            <span class="wmeta-label">Sensación</span>
+                            <span id="weather-feels" class="wmeta-val">--°C</span>
+                        </div>
+                        <div class="wmeta-item">
+                            <span class="wmeta-label">Viento</span>
+                            <span id="weather-wind" class="wmeta-val">-- km/h</span>
+                        </div>
+                        <div class="wmeta-item">
+                            <span class="wmeta-label">Humedad</span>
+                            <span id="weather-humidity" class="wmeta-val">--%</span>
+                        </div>
+                    </div>
+                    <p class="weather-coords">📍 Lat 4.45° N · Long 75.79° O</p>
+                </div>
+
+                <!-- Climate Info Cards -->
+                <div class="clima-cards">
+                    <div class="clima-card reveal">
+                        <div class="clima-card-icon">🌡️</div>
+                        <h4>Temperatura Media</h4>
+                        <div class="temp-bar-wrap">
+                            <div class="temp-bar-track">
+                                <div class="temp-bar-fill" style="width:77%"></div>
+                            </div>
+                            <strong>23°C</strong>
+                        </div>
+                        <p>Entre 18°C y 28°C a lo largo del año. El más cálido del Quindío.</p>
+                    </div>
+                    <div class="clima-card reveal">
+                        <div class="clima-card-icon">🌧️</div>
+                        <h4>Precipitación Anual</h4>
+                        <div class="temp-bar-wrap">
+                            <div class="temp-bar-track">
+                                <div class="temp-bar-fill rain-bar" style="width:65%"></div>
+                            </div>
+                            <strong>~1.800 mm</strong>
+                        </div>
+                        <p>Dos temporadas lluviosas: marzo–mayo y septiembre–noviembre.</p>
+                    </div>
+                    <div class="clima-card reveal">
+                        <div class="clima-card-icon">☀️</div>
+                        <h4>Brillo Solar</h4>
+                        <div class="temp-bar-wrap">
+                            <div class="temp-bar-track">
+                                <div class="temp-bar-fill sun-bar" style="width:70%"></div>
+                            </div>
+                            <strong>~5.5 hrs/día</strong>
+                        </div>
+                        <p>Favorece la producción de cítricos y cítricos tropicales.</p>
+                    </div>
+                    <div class="clima-card reveal">
+                        <div class="clima-card-icon">💧</div>
+                        <h4>Humedad Relativa</h4>
+                        <div class="temp-bar-wrap">
+                            <div class="temp-bar-track">
+                                <div class="temp-bar-fill hum-bar" style="width:80%"></div>
+                            </div>
+                            <strong>~80%</strong>
+                        </div>
+                        <p>Humedad tropical que nutre su biodiversidad única.</p>
+                    </div>
+
+                    <!-- Mini forecast -->
+                    <div class="forecast-strip reveal">
+                        <div id="forecast-days" class="forecast-days">
+                            <!-- filled by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ HISTORIA TIMELINE -->
+    <section id="historia" class="section-historia">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Cronología</span>
+                <h2>Línea del Tiempo</h2>
+                <p>Más de un siglo de historia, resiliencia y progreso.</p>
+            </div>
+
+            <div class="timeline-pro">
+                <div class="timeline-track"></div>
+
+                <div class="tl-item tl-left reveal">
+                    <div class="tl-year-bubble">1890</div>
+                    <div class="tl-card">
+                        <div class="tl-emoji">🌿</div>
+                        <h3>Los Primeros Colonos</h3>
+                        <p>Familias provenientes de Antioquia y Tolima se establecen en estas fértiles tierras, atraídas por la riqueza del suelo y el clima generoso del occidente del Quindío.</p>
+                    </div>
+                </div>
+
+                <div class="tl-item tl-right reveal">
+                    <div class="tl-year-bubble">1916</div>
+                    <div class="tl-card">
+                        <div class="tl-emoji">🏛️</div>
+                        <h3>Fundación Oficial</h3>
+                        <p>El 24 de junio de 1916 se oficializa la fundación del municipio por <strong>Pedro Arango</strong> y <strong>Luis Enrique Arango</strong>, dando nombre a uno de los pueblos más vibrantes del Quindío.</p>
+                    </div>
+                </div>
+
+                <div class="tl-item tl-left reveal">
+                    <div class="tl-year-bubble">1920</div>
+                    <div class="tl-card">
+                        <div class="tl-emoji">🚂</div>
+                        <h3>El Ferrocarril del Pacífico</h3>
+                        <p>La llegada del Ferrocarril del Pacífico convierte a La Tebaida en un nodo estratégico para el transporte de café hacia los puertos del Pacífico, catapultando su economía.</p>
+                    </div>
+                </div>
+
+                <div class="tl-item tl-right reveal">
+                    <div class="tl-year-bubble">1970</div>
+                    <div class="tl-card">
+                        <div class="tl-emoji">✈️</div>
+                        <h3>Aeropuerto El Edén</h3>
+                        <p>Inaugura el <strong>Aeropuerto Internacional El Edén</strong>, posicionando a La Tebaida como la puerta de entrada al Eje Cafetero desde el mundo.</p>
+                    </div>
+                </div>
+
+                <div class="tl-item tl-left reveal">
+                    <div class="tl-year-bubble">1999</div>
+                    <div class="tl-card tl-card-special">
+                        <div class="tl-emoji">🔨</div>
+                        <h3>El Gran Sismo &amp; Renacimiento</h3>
+                        <p>El terremoto del Eje Cafetero sacude a Colombia. La Tebaida se reconstruye de las cenizas con arquitectura moderna y planificación urbana, emergiendo más fuerte que nunca.</p>
+                        <div class="tl-tag">Punto de inflexión</div>
+                    </div>
+                </div>
+
+                <div class="tl-item tl-right reveal">
+                    <div class="tl-year-bubble">2011</div>
+                    <div class="tl-card">
+                        <div class="tl-emoji">☕</div>
+                        <h3>Paisaje Cultural Cafetero UNESCO</h3>
+                        <p>La región del Eje Cafetero, incluyendo La Tebaida, es declarada <strong>Patrimonio de la Humanidad</strong> por la UNESCO, reconociendo su cultura e identidad cafetera única.</p>
+                        <div class="tl-tag">Patrimonio Mundial</div>
+                    </div>
+                </div>
+
+                <div class="tl-item tl-left reveal">
+                    <div class="tl-year-bubble">2024</div>
+                    <div class="tl-card">
+                        <div class="tl-emoji">🚀</div>
+                        <h3>La Tebaida Hoy</h3>
+                        <p>Con su zona franca, el corredor gastronómico y un aeropuerto internacional, La Tebaida lidera el desarrollo económico y turístico de la región con visión de ciudad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ CURIOSIDADES -->
+    <section id="curiosidades" class="section-curiosidades">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Sabías que...</span>
+                <h2>Datos Curiosos</h2>
+                <p>Hechos sorprendentes que hacen única a La Tebaida.</p>
+            </div>
+            <div class="curiosidades-grid">
+                <div class="curio-card reveal" data-num="01">
+                    <div class="curio-icon">🛬</div>
+                    <h3>La puerta del Quindío</h3>
+                    <p>El Aeropuerto El Edén, ubicado en su territorio, es el único aeropuerto internacional del Quindío y el principal acceso aéreo al Eje Cafetero.</p>
+                </div>
+                <div class="curio-card reveal" data-num="02">
+                    <div class="curio-icon">🌡️</div>
+                    <h3>El más cálido del Quindío</h3>
+                    <p>Mientras Armenia promedia 18°C, La Tebaida alcanza cómodamente 23°C, siendo el destino perfecto para quienes buscan el calor tropical en el corazón cafetero.</p>
+                </div>
+                <div class="curio-card reveal" data-num="03">
+                    <div class="curio-icon">🌊</div>
+                    <h3>El Río La Vieja nace aquí</h3>
+                    <p>En el Valle de Maravelez, dentro del territorio de La Tebaida, confluyen el <strong>Río Quindío</strong> y el <strong>Río Barragán</strong> para formar el <strong>Río La Vieja</strong>, que luego desemboca en el Cauca. ✅ <em>Dato verificado.</em></p>
+                </div>
+                <div class="curio-card reveal" data-num="04">
+                    <div class="curio-icon">🍊</div>
+                    <h3>Capital citrícola del Quindío</h3>
+                    <p>Su clima cálido y suelo fértil la convierten en la mayor productora de naranjas y mandarinas del departamento, con exportaciones a nivel nacional.</p>
+                </div>
+                <div class="curio-card reveal" data-num="05">
+                    <div class="curio-icon">🍽️</div>
+                    <h3>Corredor Gastronómico</h3>
+                    <p>Famosa por su "corredor gastronómico" a orillas de la vía principal, donde se concentran los mejores restaurantes de bandeja paisa y fritanga del Quindío.</p>
+                </div>
+                <div class="curio-card reveal" data-num="06">
+                    <div class="curio-icon">🌍</div>
+                    <h3>Patrimonio de la Humanidad</h3>
+                    <p>Forma parte del Paisaje Cultural Cafetero, declarado Patrimonio Mundial por la UNESCO en 2011 por su excepcional valor cultural y natural.</p>
+                </div>
+            </div>
+            <!-- TREASURE TRIGGER -->
+            <div class="treasure-trigger reveal">
+                <button id="treasure-btn" class="treasure-btn" onclick="openTreasure()">
+                    <span class="treasure-chest">🌎</span>
+                    <span>Descubrir el Tesoro de La Tebaida</span>
+                    <span class="treasure-hint">Si conoces bien el municipio...</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ GALERÍA INTERACTIVA -->
+    <section id="galeria" class="section-galeria">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Imágenes</span>
+                <h2>Galería del Municipio</h2>
+                <p>Haz clic en cada imagen para explorarla en detalle.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item reveal" onclick="openLightbox(0)">
+                    <img src="hero_new.jpg" alt="Vista de La Tebaida" loading="lazy">
+                    <div class="gallery-overlay"><span>📸</span><p>Panorámica Municipal</p></div>
+                </div>
+                <div class="gallery-item reveal" onclick="openLightbox(1)">
+                    <img src="main_photo.png" alt="Plaza principal" loading="lazy">
+                    <div class="gallery-overlay"><span>🏛️</span><p>Centro Histórico</p></div>
+                </div>
+                <div class="gallery-item reveal" onclick="openLightbox(2)">
+                    <img src="relief.png" alt="Valle de Maravelez" loading="lazy">
+                    <div class="gallery-overlay"><span>🌿</span><p>Valle de Maravelez</p></div>
+                </div>
+                <div class="gallery-item reveal" onclick="openLightbox(3)">
+                    <img src="escudo_oficial.png" alt="Escudo Oficial" loading="lazy">
+                    <div class="gallery-overlay"><span>🛡️</span><p>Escudo Oficial</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGHTBOX -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <button class="lb-close" onclick="closeLightbox()">✕</button>
+        <button class="lb-prev" onclick="lbNav(-1,event)">&#8249;</button>
+        <button class="lb-next" onclick="lbNav(1,event)">&#8250;</button>
+        <div class="lb-inner">
+            <img id="lb-img" src="" alt="">
+            <p id="lb-caption"></p>
+        </div>
+    </div>
+
+    <!-- ============================================================ TRIVIA MODAL -->
+    <div id="trivia-overlay" class="trivia-overlay" style="display:none">
+        <div class="trivia-modal">
+            <button class="trivia-close" onclick="closeTreasure()">✕</button>
+            <div id="trivia-screen-intro" class="trivia-screen">
+                <div class="trivia-map-icon">🗺️</div>
+                <h2>El Tesoro de La Tebaida</h2>
+                <p>Se dice que en lo profundo de los archivos del municipio hay un secreto escondido. Responde 5 preguntas sobre La Tebaida para desenterrar el <strong>Tesoro del Edén Tropical</strong>.</p>
+                <button class="trivia-start-btn" onclick="startTrivia()">¡Comenzar la búsqueda! 🗺️</button>
+            </div>
+            <div id="trivia-screen-game" class="trivia-screen" style="display:none">
+                <div class="trivia-progress-bar"><div id="trivia-bar-fill"></div></div>
+                <p id="trivia-q-num" class="trivia-qnum">Pregunta 1 de 5</p>
+                <h3 id="trivia-question"></h3>
+                <div id="trivia-options" class="trivia-options"></div>
+                <p id="trivia-feedback" class="trivia-feedback"></p>
+            </div>
+            <div id="trivia-screen-win" class="trivia-screen" style="display:none">
+                <canvas id="confetti-canvas"></canvas>
+                <div class="trivia-treasure">💎</div>
+                <h2>¡Encontraste el Tesoro!</h2>
+                <p class="trivia-win-msg">Eres un <strong>verdadero conocedor</strong> de La Tebaida. El tesoro más valioso de este Edén Tropical es su gente, su historia y su naturaleza exuberante.</p>
+                <div class="trivia-badge">🏆 Experto en La Tebaida</div>
+                <button class="trivia-start-btn" onclick="closeTreasure()">Cerrar ✕</button>
+            </div>
+            <div id="trivia-screen-lose" class="trivia-screen" style="display:none">
+                <div style="font-size:3rem">😅</div>
+                <h2>¡El tesoro escapa!</h2>
+                <p>Fallaste en el camino, pero el Edén Tropical te espera. Explora más el municipio y vuelve a intentarlo.</p>
+                <button class="trivia-start-btn" onclick="startTrivia()">Intentar de nuevo 🔄</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ MAPA -->
+    <section id="mapa" class="section-mapa">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-tag">Explorar</span>
+                <h2>Mapa Interactivo</h2>
+                <p>Descubre los puntos de interés de La Tebaida.</p>
+            </div>
+            <div id="map" class="reveal"></div>
+        </div>
+    </section>
+
+    <!-- ============================================================ FOOTER -->
+    <footer class="footer-main">
+        <div class="footer-wave">
+            <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path d="M0,40 Q360,0 720,40 Q1080,80 1440,40 L1440,80 L0,80 Z" fill="#1b4332"/></svg>
+        </div>
+        <div class="footer-body">
+            <div class="container">
+                <div class="footer-grid">
+                    <!-- Brand -->
+                    <div class="footer-brand">
+                        <img src="escudo_oficial.png" alt="Escudo La Tebaida" class="footer-escudo" style="object-fit:contain;background:transparent;">
+                        <h3>La Tebaida</h3>
+                        <p>Edén Tropical del Quindío</p>
+                        <p class="footer-motto">Trabajo · Divisas · Riqueza</p>
+                    </div>
+                    <!-- Autores -->
+                    <div class="footer-autores">
+                        <h4>Autores del Proyecto</h4>
+                        <ul>
+                            <li>Sharon Valeria Salamandra</li>
+                            <li>Santiago Andrés Sánchez Castro</li>
+                            <li>Valery Díaz</li>
+                        </ul>
+                        <span class="footer-grupo">Grupo 10-B</span>
+                    </div>
+                    <!-- Institución -->
+                    <div class="footer-institucion">
+                        <h4>Institución Educativa</h4>
+                        <div class="footer-logo-box">
+                            <img src="logo_colegio.jpg" alt="Fundanza" class="footer-logo-colegio">
+                        </div>
+                        <p>Institución Educativa Fundanza<br>Quindío, Colombia · 2026</p>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>© 2026 La Tebaida, Quindío · Proyecto Académico · Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================ TTS BUTTON -->
+    <button id="tts-btn" class="tts-btn" title="Leer página en voz alta" aria-label="Activar lectura de voz para accesibilidad">
+        <span id="tts-icon">🔊</span>
+        <span class="tts-label">Escuchar</span>
+    </button>
+
+    <!-- ============================================================ AUDIO AMBIENTAL -->
+    <audio id="bg-audio" loop preload="auto">
+        <source src="Huele_a_café_y_a_tierra.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- MUSIC CONTROL BUTTON -->
+    <div class="music-control" id="music-control">
+        <button id="music-btn" class="music-btn" title="Música ambiental" aria-label="Controlar música de fondo">
+            <span id="music-icon">🎵</span>
+        </button>
+        <div class="music-info" id="music-info">
+            <span class="music-title">Huele a Café y a Tierra</span>
+            <div class="music-bars" id="music-bars">
+                <span></span><span></span><span></span><span></span><span></span>
+            </div>
+        </div>
+        <input type="range" id="music-vol" class="music-vol" min="0" max="1" step="0.05" value="0.4" title="Volumen">
+    </div>
+    <!-- BACK TO TOP -->
+    <button id="back-top" class="back-top" aria-label="Volver arriba" title="Volver al inicio">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+
+    <script src="script.js"></script>
+    <script src="music.js"></script>
+    <script src="interactivo.js"></script>
+</body>
+</html>
