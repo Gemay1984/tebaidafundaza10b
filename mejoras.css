@@ -129,3 +129,33 @@
 @media (max-width: 600px) {
     .back-top { right: 1rem; bottom: 5rem; }
 }
+
+/* ── 11. VIDEO PROMOCIONAL ── */
+.section-video {
+    background: rgba(13,34,24,0.7);
+    backdrop-filter: blur(8px);
+    position: relative;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.video-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.15);
+    background: #000;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.video-wrapper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+.tebaida-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+}
