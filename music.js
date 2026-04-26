@@ -10,6 +10,11 @@ const volSldr = document.getElementById('music-vol');
 const control = document.getElementById('music-control');
 const splash  = document.getElementById('splash');
 
+// Bloquear el scroll de la página mientras el splash está activo
+document.body.style.overflow = 'hidden';
+// Forzar a iniciar siempre desde arriba si el navegador guardó la posición
+window.scrollTo(0, 0);
+
 /* ── Helpers ── */
 function fadeAudioIn(target) {
     audio.volume = 0;
@@ -45,6 +50,10 @@ function setPlayUI(playing) {
 
 /* ── Enter site → start music ── */
 window.enterSite = function () {
+    // Desbloquear el scroll y forzar posición inicial
+    document.body.style.overflow = '';
+    window.scrollTo(0, 0);
+
     // Dismiss splash
     splash.classList.add('hidden');
     setTimeout(() => { splash.style.display = 'none'; }, 900);
